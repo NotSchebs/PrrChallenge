@@ -1,6 +1,6 @@
 ---
 title: "Super League Analysis Report"
-author: "Team Project Alejndro Scheifele, Sébastien Bagdasarianz, Jakov Bludnikov "
+author: "Team Project Alejndro Scheifele, Sébastien Bagdasarianz "
 date: "`r Sys.Date()`"
 output: 
   html_notebook:
