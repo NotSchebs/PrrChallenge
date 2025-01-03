@@ -76,7 +76,6 @@ Wir haben aus Transfermarkt.com die daten aller saisons von 2004 bis
 Importiere libraries und den Data Frame:
 
 ```{r}
-
 library(dplyr)
 library(ggplot2)
 library(tidyr)
@@ -88,6 +87,13 @@ library(caret)
 library(scales)
 library(readr)
 library(grid)  # Für die margin-Funktion
+
+
+# renv::init()  
+
+# renv::snapshot()
+
+# renv::restore()
 
 data <- read.csv('Schweizer_superLeague_Data - Kopie.csv')
 DF <- data
