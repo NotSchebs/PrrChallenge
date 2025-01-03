@@ -18,11 +18,14 @@ editor_options:
 
 Diese Analyse untersucht folgende Aspekte der Super League:
 
-<li>Die Wahrscheinlichkeit, die Super League zu gewinnen, basierend auf dem Marktwert.</li>
-    
-<li>Eine Analyse der geschossenen und erhaltenen Tore im bezug auf die Platzierung.</li>
+<li>Die Wahrscheinlichkeit, die Super League zu gewinnen, basierend auf
+dem Marktwert.</li>
 
-<li>Die Wahrscheinlichkeit, einen Platzierungsbereich 2 mal in folge zu erreichen.</li>
+<li>Eine Analyse der geschossenen und erhaltenen Tore im bezug auf die
+Platzierung.</li>
+
+<li>Die Wahrscheinlichkeit, einen Platzierungsbereich 2 mal in folge zu
+erreichen.</li>
 
 # Zieldefinierung
 
@@ -61,6 +64,7 @@ kommen</li>
 </ul>
 
 <li>Szenarien durchspielen</li>
+
 <ul>
 
 <li>Zukünftige Tabellen Simulieren</li>
@@ -76,6 +80,7 @@ Wir haben aus Transfermarkt.com die daten aller saisons von 2004 bis
 Importiere libraries und den Data Frame:
 
 ```{r}
+renv::restore()
 library(dplyr)
 library(ggplot2)
 library(tidyr)
@@ -134,7 +139,9 @@ data$Goals_conceded <- as.numeric(data$Goals_conceded)
 ```
 
 <br>Es werden neue Spalten erstellt mit dem durchschnitlichen Marktwert
-pro Saison und dem Gewinnverhältnis von jeder Mannschaft. Der durchschnittliche Marktwert wird für zukünftige berechnungen benötigt und hier als Punktdiagramm dargestellt.
+pro Saison und dem Gewinnverhältnis von jeder Mannschaft. Der
+durchschnittliche Marktwert wird für zukünftige berechnungen benötigt
+und hier als Punktdiagramm dargestellt.
 
 ```{r}
 data <- data %>%
@@ -163,22 +170,43 @@ ggplot(data, aes(x = sub("^.*(\\d{2}/\\d{2})$", "\\1", data$Season), y = Durchsc
 
 # Wahrscheinlichkeit in die Top 3 zu gelangen mit Top 3 Marktwert
 
-<br>**Vorgehen** <br> Zunächst werden die Top-3-Teams nach Marktwert pro Saison identifiziert (also die drei Teams mit dem höchsten Marktwert in jeder Saison). Anschließend werden die Top-3-Mannschaften der jeweiligen Saison ermittelt und mit den Top-3-Marktwert-Teams verglichen.
+<br>**Vorgehen** <br> Zunächst werden die Top-3-Teams nach Marktwert pro
+Saison identifiziert (also die drei Teams mit dem höchsten Marktwert in
+jeder Saison). Anschließend werden die Top-3-Mannschaften der jeweiligen
+Saison ermittelt und mit den Top-3-Marktwert-Teams verglichen.
 
-Aus diesen Daten wird die Wahrscheinlichkeit berechnet, wie häufig Teams mit den höchsten Marktwerten auch unter den Top-3-Platzierungen zu finden waren. Mithilfe der Gesamtanzahl der Top-3-Marktwert-Teams über alle Saisons hinweg kann das Verhältnis und somit die Wahrscheinlichkeit für eine Top-3-Platzierung bei einem Top-3-Marktwert bestimmt werden.
+Aus diesen Daten wird die Wahrscheinlichkeit berechnet, wie häufig Teams
+mit den höchsten Marktwerten auch unter den Top-3-Platzierungen zu
+finden waren. Mithilfe der Gesamtanzahl der Top-3-Marktwert-Teams über
+alle Saisons hinweg kann das Verhältnis und somit die Wahrscheinlichkeit
+für eine Top-3-Platzierung bei einem Top-3-Marktwert bestimmt werden.
 
-Auf Grundlage eines Modells, das auf logistischer Regression und Monte-Carlo-Simulationen basiert, werden schließlich Vorhersagen für zukünftige Saisons getroffen.
-
-
+Auf Grundlage eines Modells, das auf logistischer Regression und
+Monte-Carlo-Simulationen basiert, werden schließlich Vorhersagen für
+zukünftige Saisons getroffen.
 
 ## Die Berechnung
 
-<br> Um die Wahrscheinlichkeit zu berechnen, dass ein Team mit einem der drei höchsten Marktwerte in den Top 3 der Liga landet, wird schrittweise vorgegangen
+<br> Um die Wahrscheinlichkeit zu berechnen, dass ein Team mit einem der
+drei höchsten Marktwerte in den Top 3 der Liga landet, wird schrittweise
+vorgegangen
 
-Zunächst wird das Verhältnis der Teams mit den höchsten Marktwerten, die tatsächlich unter den Top 3 platziert waren, visualisiert. Anschließend wird die Wahrscheinlichkeit berechnet: <br><ul> <li>**Gesamtzahl der Teams mit höchstem
-Marktwert:** Diese Zahl entspricht der Gesamtanzahl der Einträge im DataFrame `Top3_Marktwert_Teams`.</li> <li>**Anzahl der Teams, die unter
-den Top 3 waren:** Diese Zahl ergibt sich aus der Spalte `was_Top3`,
-die den Wert `TRUE` für Teams enthält, die in den Top 3 der Liga gelandet sind.</li></ul>
+Zunächst wird das Verhältnis der Teams mit den höchsten Marktwerten, die
+tatsächlich unter den Top 3 platziert waren, visualisiert. Anschließend
+wird die Wahrscheinlichkeit berechnet: <br>
+
+<ul>
+
+<li>**Gesamtzahl der Teams mit höchstem Marktwert:** Diese Zahl
+entspricht der Gesamtanzahl der Einträge im DataFrame
+`Top3_Marktwert_Teams`.</li>
+
+<li>**Anzahl der Teams, die unter den Top 3 waren:** Diese Zahl ergibt
+sich aus der Spalte `was_Top3`, die den Wert `TRUE` für Teams enthält,
+die in den Top 3 der Liga gelandet sind.</li>
+
+</ul>
+
 Die Wahrscheinlichkeit ist dann das Verhältnis der Teams, die in den Top
 3 landeten, zu allen Teams mit dem höchsten Marktwert:<br>
 
@@ -243,7 +271,11 @@ verhältnis_plot(count_Top3, 3, "Top")
 ```
 
 ## Verteilung der Marktwerte im Verhältnis zum Durchschnitt für Teams in den Top 3
-<br> Eine Häufigkeitsverteilung der Marktwerte wird erstellt und mit den Platzierungen korreliert. Dadurch könnte erkennbar werden, ob es eine bestimmte Schwelle gibt, ab der Teams häufiger unter den Top 3 platziert sind.
+
+<br> Eine Häufigkeitsverteilung der Marktwerte wird erstellt und mit den
+Platzierungen korreliert. Dadurch könnte erkennbar werden, ob es eine
+bestimmte Schwelle gibt, ab der Teams häufiger unter den Top 3 platziert
+sind.
 
 ```{r}
 verteilung_plot <- function(marktwert, a) {
@@ -377,6 +409,7 @@ modl <- function(marktwert){
 model <- modl(Top3_Marktwert_Teams)
 
 ```
+
 -   Formel: was_Top \~ log(Marktwert_in_Mio_Euro) + Gewinnverhaeltnis +
     GD + Durchschnittsmarktwert
 -   was_Top: Binäre Zielvariable (1, wenn Team in den Top 3 ist; 0, wenn
@@ -394,10 +427,11 @@ model <- modl(Top3_Marktwert_Teams)
     (Logistische Regression).
 -   Ergebnis: Die Funktion gibt ein GLM-Modell zurück, das auf diesen
     Daten basiert.
-    
+
 ```{r}
 summary(model)
 ```
+
 <br>
 
 #### Interpretation der Ergebnisse
@@ -433,8 +467,8 @@ log(Marktwert_in_Mio_Euro) (7.47426):
 Gewinnverhältnis (0.08638):
 
 -   Der Koeffizient für das Gewinnverhältnis zeigt an, dass ein Anstieg
-    des Gewinnverhältnisses um eine Einheit(Estimate) die Wahrscheinlichkeit für
-    ein Top-3-Ergebnis leicht erhöht.
+    des Gewinnverhältnisses um eine Einheit(Estimate) die
+    Wahrscheinlichkeit für ein Top-3-Ergebnis leicht erhöht.
 -   Der p-Wert (p = 0.634) deutet jedoch darauf hin, dass dieser Effekt
     statistisch nicht signifikant ist.
 
@@ -447,15 +481,15 @@ GD (0.29147):
 
 Durchschnittsmarktwert (-0.33866):
 
--   Ein negativer Koeffizient für den Durchschnittsmarktwert zeigt an, dass
-ein höherer Durchschnittsmarktwert tendenziell mit einer geringeren
-Wahrscheinlichkeit verbunden ist, dass ein Team in den Top 3 landet. -
-Der Effekt ist ebenfalls statistisch nicht signifikant (p = 0.243).
+-   Ein negativer Koeffizient für den Durchschnittsmarktwert zeigt an,
+    dass ein höherer Durchschnittsmarktwert tendenziell mit einer
+    geringeren Wahrscheinlichkeit verbunden ist, dass ein Team in den
+    Top 3 landet. - Der Effekt ist ebenfalls statistisch nicht
+    signifikant (p = 0.243).
 
 <br>
 
 #### Statistische Signifikanz
-
 
 -   **Std. Error (Standardfehler)**: Der Standardfehler gibt die
     Unsicherheit der Schätzung für jeden Koeffizienten an.
@@ -463,9 +497,9 @@ Der Effekt ist ebenfalls statistisch nicht signifikant (p = 0.243).
     Standardabweichung des Koeffizienten (Estimate / Std. Error).
 -   **Pr(\>\|z\|)**: p-Wert, der angibt, wie wahrscheinlich es ist, dass
     der beobachtete Effekt rein zufällig ist.
--   **p-Wert (Pr(\>\|z\|))**: Der p-Wert zeigt an, wie wahrscheinlich es ist,
-    dass der beobachtete Effekt rein zufällig ist. Ein p-Wert \> 0.05
-    bedeutet, dass der Effekt statistisch nicht signifikant ist.
+-   **p-Wert (Pr(\>\|z\|))**: Der p-Wert zeigt an, wie wahrscheinlich es
+    ist, dass der beobachtete Effekt rein zufällig ist. Ein p-Wert \>
+    0.05 bedeutet, dass der Effekt statistisch nicht signifikant ist.
 
 In diesem Modell sind alle Prädiktoren statistisch nicht signifikant.
 
@@ -509,8 +543,8 @@ Durchschnittsmarktwert).
 Berechnung und Interpretation der Wahrscheinlichkeiten: - Die
 Logit-Funktion lautet: $$
     \text{Logit}(P) = \beta_0 + \beta_1 \cdot \text{Marktwert}
-    $$ Die Wahrscheinlichkeit für ein Team, in den Top 3 zu landen,
-ist dann:$$
+    $$ Die Wahrscheinlichkeit für ein Team, in den Top 3 zu landen, ist
+dann:$$
     P(y = 1 \mid x) = \frac{1}{1 + e^{-\text{Logit}(P)}}.
     $$
 
@@ -535,30 +569,41 @@ folgen.
 <p><strong>Prozess:</strong></p>
 
 <ul>
+
 <li>
+
 **Zufällige Marktwertsimulation:**
+
 <ul>
+
 <li>Die Funktion verwendet die **lognormale Verteilung**, um neue
-        Marktwerte zu simulieren. Der **logarithmierte Durchschnitt**
-        und die **Standardabweichung** der historischen Marktwerte
-        (`Marktwert_in_Mio_Euro`) werden als Parameter verwendet.</li>
-<li>Mit der **lognormale Verteilung** wird angenommen, dass
-        Marktwerte eher eine **schiefe Verteilung** aufweisen, d. h. die
-        Werte tendieren dazu, auf der unteren Skala konzentriert zu
-        sein, mit wenigen Teams, die sehr hohe Marktwerte besitzen.</li>
-        
+Marktwerte zu simulieren. Der **logarithmierte Durchschnitt** und die
+**Standardabweichung** der historischen Marktwerte
+(`Marktwert_in_Mio_Euro`) werden als Parameter verwendet.</li>
+
+<li>Mit der **lognormale Verteilung** wird angenommen, dass Marktwerte
+eher eine **schiefe Verteilung** aufweisen, d. h. die Werte tendieren
+dazu, auf der unteren Skala konzentriert zu sein, mit wenigen Teams, die
+sehr hohe Marktwerte besitzen.</li>
+
 </ul>
 
+<li>
 
-<li>**Zufallswerte für zukünftige Marktwerte:**
+**Zufallswerte für zukünftige Marktwerte:**
+
 <ul>
-<li>Mit `rlnorm()` werden 1000 zufällige Marktwerte generiert, die
-        auf den historischen Daten basieren, um zukünftige Szenarien zu
-        simulieren.</li>
+
+<li>Mit `rlnorm()` werden 1000 zufällige Marktwerte generiert, die auf
+den historischen Daten basieren, um zukünftige Szenarien zu
+simulieren.</li>
+
 <li>Diese simulierten Werte können dann verwendet werden, um die
-        **Top-3-Wahrscheinlichkeit** basierend auf den anderen Variablen
-        zu berechnen.</li>
+**Top-3-Wahrscheinlichkeit** basierend auf den anderen Variablen zu
+berechnen.</li>
+
 </ul>
+
 </ul>
 
 </pre>
@@ -609,7 +654,9 @@ Marktwert aller Teams in einer Saison.</li>
 
 </li>
 
-<li><strong>Berechnung des Marktwerts zum
+<li>
+
+<strong>Berechnung des Marktwerts zum
 Durchschnittsmarktwert-Verhältnis:</strong> Das Verhältnis des
 Marktwerts eines Teams zum durchschnittlichen Marktwert wird für jede
 simulierte Beobachtung berechnet.c
@@ -631,11 +678,13 @@ wird eine binäre Variable (<code>Top</code>) erzeugt, die mit
 berechneten Wahrscheinlichkeiten.</li>
 
 </ul>
+
 <br>
 
 #### Simulation der Top-3-Wahrscheinlichkeiten:
 
-Es werden zukünfige Teams simuliert, wobei zusätzlich noch andere Variablen wie W und GD zufällig generiert werden.
+Es werden zukünfige Teams simuliert, wobei zusätzlich noch andere
+Variablen wie W und GD zufällig generiert werden.
 
 ```{r}
 sim_val <- function(marktwert){
@@ -816,20 +865,27 @@ Teams, die es nicht schaffen, unterschiedlich eingefärbt sind.
     basierend auf verschiedenen simulierten Szenarien zu entwickeln.
     Dies kann nützlich sein, um zukünftige Teamleistungen oder
     Marktwertentwicklung zu prognostizieren.
-    
-# Wahrscheinlichkeit in die Top 5 zu kommen mit Top-5-Marktwert
-Um die Wahrscheinlichkeit zu berechnen, mit einem der Top-5-Marktwerte unter die Top 5 zu gelangen, wird der Prozess aus Punkt 4 unverändert übernommen. Statt nach den Top 3 wird jedoch nun nach den Top 5 gefiltert.
-<br>
-<br>
-<strong>Ablauf</strong>
-<ul>
-<li>Die Berechnung</li>
-<li>Verteilung der Marktwerte im Verhältnis zum Durchschnitt</li>
-<li>Modellaufbau mit logistischer Regression</li>
-<li>Simulation der zukünftigen Saisons</li>
-<li>Visualisierung der Simulation zukünftiger Saisons</li>
-</ul>
 
+# Wahrscheinlichkeit in die Top 5 zu kommen mit Top-5-Marktwert
+
+Um die Wahrscheinlichkeit zu berechnen, mit einem der Top-5-Marktwerte
+unter die Top 5 zu gelangen, wird der Prozess aus Punkt 4 unverändert
+übernommen. Statt nach den Top 3 wird jedoch nun nach den Top 5
+gefiltert. <br> <br> <strong>Ablauf</strong>
+
+<ul>
+
+<li>Die Berechnung</li>
+
+<li>Verteilung der Marktwerte im Verhältnis zum Durchschnitt</li>
+
+<li>Modellaufbau mit logistischer Regression</li>
+
+<li>Simulation der zukünftigen Saisons</li>
+
+<li>Visualisierung der Simulation zukünftiger Saisons</li>
+
+</ul>
 
 ```{r}
 Top5_Marktwert_Teams <- Top_func(5)
@@ -862,23 +918,37 @@ simulated_results5 <- sim_res(model5,simulated_values5,Top5_Marktwert_Teams)
 #Visualisierung der Simulationsergebnisse
 sim_plot(simulated_results5, 5)
 ```
+
 ## Schlussfolgerung Wahrscheinlichkeit in die Top 5 zu kommen mit Top-5-Marktwert
 
-Die Auswertungen zeigen eine ähnliche Verteilung wie bei den Top 3, allerdings sind die Marktwerte geringer. Dies verdeutlicht, dass die Top 5 im Vergleich zum Marktwert weniger konsistent sind und es größere Unterschiede zwischen dem höchsten und dem niedrigsten Marktwert gibt.
-
+Die Auswertungen zeigen eine ähnliche Verteilung wie bei den Top 3,
+allerdings sind die Marktwerte geringer. Dies verdeutlicht, dass die Top
+5 im Vergleich zum Marktwert weniger konsistent sind und es größere
+Unterschiede zwischen dem höchsten und dem niedrigsten Marktwert gibt.
 
 # Wahrscheinlichkeit in die Top 5 zu kommen mit den 5 schlechtesten Marktwert
 
-Es wird analysiert, ob Teams mit sehr niedrigen Marktwerten, beispielsweise die fünf Teams mit den geringsten Marktwerten, in die Top 5 gelangen können. Der Ablauf folgt dem gleichen Programm wie in Punkt 4, jedoch wird zu Beginn die Funktion <code>lowest()</code> integriert.
+Es wird analysiert, ob Teams mit sehr niedrigen Marktwerten,
+beispielsweise die fünf Teams mit den geringsten Marktwerten, in die Top
+5 gelangen können. Der Ablauf folgt dem gleichen Programm wie in Punkt
+4, jedoch wird zu Beginn die Funktion <code>lowest()</code> integriert.
 
 <strong>Ablauf</strong>
+
 <ul>
+
 <li>Neue Funktion integrieren</li>
+
 <li>Die Berechnung</li>
+
 <li>Verteilung der Marktwerte im Verhältnis zum Durchschnitt</li>
+
 <li>Modellaufbau mit logistischer Regression</li>
+
 <li>Simulation der zukünftigen Saisons</li>
+
 <li>Visualisierung der Simulation zukünftiger Saisons</li>
+
 </ul>
 
 ## Teams mit den niedrigsten 5 Marktwerten <code>lowest()</code>:
@@ -917,22 +987,32 @@ simulated_results5_low5 <- sim_res(model5_low5,simulated_values5_low5,lowest5_in
 sim_plot(simulated_results5_low5, 5)
 
 ```
+
 ## Schlussfolgerung Wahrscheinlichkeit in die Top 5 zu kommen mit den 5 schlechtesten Marktwert
 
-Teams mit einem Top-5-Marktwert landen nur in etwa einem Drittel der Fälle tatsächlich unter den Top 5, was die Rolle von zusätzlichen Variablen in der Leistungsbewertung betont. Das Histogramm für simulierte Saisons zeigt eine ähnliche Verteilung wie die historische Analyse. Teams mit höheren relativen Marktwerten haben eine größere Wahrscheinlichkeit, in den Top 5 zu landen (blau). Gleichzeitig bleibt ein erheblicher Anteil von Teams mit hohen Marktwerten außerhalb der Top 5 (rot).
-Diese Simulation unterstreicht die Unsicherheiten und Schwankungen im Zusammenhang mit Marktwerten und Platzierungen. Jedoch ist eine überdurchschnittliche finanzielle Ausstattung (Marktwert) zwar hilfreich, aber nicht zwingend erforderlich für eine Top-5-Platzierung ist.
+Teams mit einem Top-5-Marktwert landen nur in etwa einem Drittel der
+Fälle tatsächlich unter den Top 5, was die Rolle von zusätzlichen
+Variablen in der Leistungsbewertung betont. Das Histogramm für
+simulierte Saisons zeigt eine ähnliche Verteilung wie die historische
+Analyse. Teams mit höheren relativen Marktwerten haben eine größere
+Wahrscheinlichkeit, in den Top 5 zu landen (blau). Gleichzeitig bleibt
+ein erheblicher Anteil von Teams mit hohen Marktwerten außerhalb der Top
+5 (rot). Diese Simulation unterstreicht die Unsicherheiten und
+Schwankungen im Zusammenhang mit Marktwerten und Platzierungen. Jedoch
+ist eine überdurchschnittliche finanzielle Ausstattung (Marktwert) zwar
+hilfreich, aber nicht zwingend erforderlich für eine Top-5-Platzierung
+ist.
 
 # Korrelation zwischen Platzierung und Tordifferenz
 
+<p>Die Korrelation gibt die <strong>Stärke</strong> und
+<strong>Richtung</strong> des linearen Zusammenhangs zwischen der
+Platzierung (<code>Rank</code>) und der Tordifferenz (<code>GD</code>)
+an.</p>
 
-  <p>Die Korrelation gibt die <strong>Stärke</strong> und
-  <strong>Richtung</strong> des linearen Zusammenhangs zwischen der
-  Platzierung (<code>Rank</code>) und der Tordifferenz
-  (<code>GD</code>) an.</p>
+<p>Die Berechnung erfolgte mit:</p>
 
-  <p>Die Berechnung erfolgte mit:</p>
-
-  <code>cor(data$Rank, data$GD, use = 'complete.obs')</code>
+<code>cor(data$Rank, data$GD, use = 'complete.obs')</code>
 
 <ul>
 
@@ -951,14 +1031,10 @@ print(paste("Relation zwischen Platzierung und Tordifferenz:", round(relation, 2
 
 # Lineares Modell und Visualisierung des Regressionskoeffizient zwischen Platzierung und Tordifferenz
 
-
-
 ## Lineares Modell erstellen
 
-
-
-<p>Das lineare Modell wird erstellt, um den Zusammenhang zwischen
-der <strong>Platzierung (Rank)</strong> und der <strong>Tordifferenz
+<p>Das lineare Modell wird erstellt, um den Zusammenhang zwischen der
+<strong>Platzierung (Rank)</strong> und der <strong>Tordifferenz
 (GD)</strong> zu untersuchen. Die Regressionsgleichung lautet:</p>
 
 <p style="text-align: center; font-weight: bold;">
@@ -971,11 +1047,11 @@ GD = β₀ + β₁ × Rank + ε
 
 <ul>
 
-<li><code>β₀</code>: Achsenabschnitt der Regressionsgeraden (Wert
-von GD bei Rank = 0)</li>
+<li><code>β₀</code>: Achsenabschnitt der Regressionsgeraden (Wert von GD
+bei Rank = 0)</li>
 
-<li><code>β₁</code>: Steigung der Regressionsgeraden (zeigt, wie
-sich GD verändert, wenn sich Rank um 1 verändert)</li>
+<li><code>β₁</code>: Steigung der Regressionsgeraden (zeigt, wie sich GD
+verändert, wenn sich Rank um 1 verändert)</li>
 
 <li><code>ε</code>: Fehlerterm, der die Abweichung zwischen dem
 tatsächlichen Wert und dem durch das Modell vorhergesagten Wert
@@ -988,37 +1064,31 @@ des Modells zurück und liefert Informationen über die
 Regressionskoeffizienten, das R-Quadrat und die Signifikanz des
 Modells.</p>
 
-
-
-##  Berechnung und Anzeige der Steigung der Regressionsgeraden
-
-
+## Berechnung und Anzeige der Steigung der Regressionsgeraden
 
 <p>Die Steigung <code>β₁</code> wird extrahiert, um den Zusammenhang
 zwischen der Platzierung und der Tordifferenz darzustellen. Der
 Regressionskoeffizient für <code>Rank</code> wird mit folgendem Code
 berechnet:</p>
 
-<code>coef(model)["Rank"]</code>
+<code>coef(model)\["Rank"\]</code>
 
-<p>Der Wert von <code>β₁</code> zeigt an, wie sich die Tordifferenz
-(GD) verändert, wenn sich die Platzierung (Rank) um eine Einheit
+<p>Der Wert von <code>β₁</code> zeigt an, wie sich die Tordifferenz (GD)
+verändert, wenn sich die Platzierung (Rank) um eine Einheit
 verändert.</p>
 
-
-##  Visualisierung des Streudiagramms mit Regressionsgerade
-
+## Visualisierung des Streudiagramms mit Regressionsgerade
 
 <p>Das Streudiagramm zeigt die Beziehung zwischen der
 <strong>Platzierung (Rank)</strong> und der <strong>Tordifferenz
 (GD)</strong>. Es stellt die tatsächlichen Werte der Teams als blaue
 Punkte dar.</p>
 
-<p>Zusätzlich wird die Regressionsgerade (rote Linie) angezeigt, die
-den besten linearen Fit zwischen den beiden Variablen beschreibt.
-Die Funktion <code>geom_smooth(method = 'lm', se = TRUE)</code>
-berechnet diese Linie, wobei <code>se = TRUE</code> das
-Konfidenzintervall um die Regressionsgerade anzeigt.</p>
+<p>Zusätzlich wird die Regressionsgerade (rote Linie) angezeigt, die den
+besten linearen Fit zwischen den beiden Variablen beschreibt. Die
+Funktion <code>geom_smooth(method = 'lm', se = TRUE)</code> berechnet
+diese Linie, wobei <code>se = TRUE</code> das Konfidenzintervall um die
+Regressionsgerade anzeigt.</p>
 
 <p>Die Achsen des Diagramms zeigen die Platzierung
 (<strong>Rank</strong>) auf der X-Achse und die Tordifferenz
@@ -1057,7 +1127,6 @@ dar, die den besten linearen Zusammenhang zwischen den beiden Variablen
 beschreibt. Das Konfidenzintervall zeigt, wie unsicher diese Schätzung
 der Regressionsgerade ist.</p>
 
-
 ```{r}
 # Lineares Modell
 model <- lm(GD ~ Rank, data = data)
@@ -1080,10 +1149,7 @@ ggplot(data, aes(x = Rank, y = GD)) +
   theme_minimal()
 ```
 
-
 ## Auslesung des Regressionsmodell
-
-
 
 <p>Das Streudiagramm zeigt:</p>
 
@@ -1103,16 +1169,37 @@ Y-Achse die <strong>Tordifferenz</strong> zeigt.</p>
 
 ## Geschossene Tore und erhaltene Tore
 
-Das Vorgehen in den verschiedenen Abschnitt folgt einem einheitlichen Schema:
+Das Vorgehen in den verschiedenen Abschnitt folgt einem einheitlichen
+Schema:
 
--   Lineares Modell erstellen: Zunächst wird ein lineares Modell entwickelt, um den Zusammenhang zwischen den Variablen (z. B. Platzierung und Tordifferenz) zu analysieren. Die Regressionsgleichung in der Form $$GD = β₀ + β₁ × Rank + ε$$ beschreibt die Beziehung, wobei β₀ den Achsenabschnitt, β₁ die Steigung und ε den Fehlerterm darstellt. Die Funktion `summary(model)` liefert eine Übersicht der Modellergebnisse, einschließlich Regressionskoeffizienten, R-Quadrat und p-Werten.
+-   Lineares Modell erstellen: Zunächst wird ein lineares Modell
+    entwickelt, um den Zusammenhang zwischen den Variablen (z. B.
+    Platzierung und Tordifferenz) zu analysieren. Die
+    Regressionsgleichung in der Form $$GD = β₀ + β₁ × Rank + ε$$
+    beschreibt die Beziehung, wobei β₀ den Achsenabschnitt, β₁ die
+    Steigung und ε den Fehlerterm darstellt. Die Funktion
+    `summary(model)` liefert eine Übersicht der Modellergebnisse,
+    einschließlich Regressionskoeffizienten, R-Quadrat und p-Werten.
 
--   Berechnung und Interpretation der Steigung: Der Regressionskoeffizient β₁, der die Veränderung der Tordifferenz bei einer Änderung der Platzierung um eine Einheit beschreibt, wird extrahiert. Ein positiver Wert zeigt eine positive Beziehung (bessere Platzierung korreliert mit einer höheren Tordifferenz), während ein negativer Wert das Gegenteil andeutet.
+-   Berechnung und Interpretation der Steigung: Der
+    Regressionskoeffizient β₁, der die Veränderung der Tordifferenz bei
+    einer Änderung der Platzierung um eine Einheit beschreibt, wird
+    extrahiert. Ein positiver Wert zeigt eine positive Beziehung
+    (bessere Platzierung korreliert mit einer höheren Tordifferenz),
+    während ein negativer Wert das Gegenteil andeutet.
 
--   Visualisierung: Die tatsächlichen Werte werden in einem Streudiagramm durch blaue Punkte dargestellt. Die Regressionsgerade (rote Linie) zeigt den besten linearen Fit, ergänzt durch ein Konfidenzintervall, das die Unsicherheit der Schätzung visualisiert. Die Achsen sind entsprechend der Variablen beschriftet, um die Beziehung klar darzustellen.
+-   Visualisierung: Die tatsächlichen Werte werden in einem
+    Streudiagramm durch blaue Punkte dargestellt. Die Regressionsgerade
+    (rote Linie) zeigt den besten linearen Fit, ergänzt durch ein
+    Konfidenzintervall, das die Unsicherheit der Schätzung visualisiert.
+    Die Achsen sind entsprechend der Variablen beschriftet, um die
+    Beziehung klar darzustellen.
 
-Dieses Verfahren wird konsequent angewandt, um unterschiedliche Variablenkombinationen wie Platzierung und kassierte Tore oder Platzierung und erzielte Tore zu analysieren. Die Konsistenz in der Vorgehensweise gewährleistet eine vergleichbare Interpretation und Darstellung der Ergebnisse.
-
+Dieses Verfahren wird konsequent angewandt, um unterschiedliche
+Variablenkombinationen wie Platzierung und kassierte Tore oder
+Platzierung und erzielte Tore zu analysieren. Die Konsistenz in der
+Vorgehensweise gewährleistet eine vergleichbare Interpretation und
+Darstellung der Ergebnisse.
 
 ```{r}
 # Berechnung der Relation
@@ -1162,59 +1249,53 @@ ggplot(data, aes(x = Rank, y = Goals_conceded)) +
   theme_minimal()
 
 ```
+
 # Berechnung der Wahrscheinlichkeit für wiederholte Top-3 Platzierungen
 
+## Extraktion des Jahres aus der Saison
 
+<p>Zu Beginn wird die <strong>Saison</strong>-Spalte so bearbeitet, dass
+nur das Jahr vor dem Schrägstrich ("/") extrahiert wird. Hierzu wird der
+reguläre Ausdruck <code>/.\*</code> verwendet, der den Teil nach dem
+Schrägstrich entfernt. Danach wird die Saison als numerischer Wert
+umgewandelt:</p>
 
-##  Extraktion des Jahres aus der Saison
-
-
-<p>Zu Beginn wird die <strong>Saison</strong>-Spalte so bearbeitet,
-dass nur das Jahr vor dem Schrägstrich ("/") extrahiert wird. Hierzu
-wird der reguläre Ausdruck <code>/.\*</code> verwendet, der den Teil
-nach dem Schrägstrich entfernt. Danach wird die Saison als
-numerischer Wert umgewandelt:</p>
-
-`data \<- data %\>% mutate(Season = as.numeric(sub('/.*', '',Season)))` 
+`data \<- data %\>% mutate(Season = as.numeric(sub('/.*', '',Season)))`
 
 ## Auswahl und Bereinigung der relevanten Daten
 
 <p>Es werden nur die Spalten <strong>Season</strong>,
-<strong>Rank</strong> und <strong>Club</strong> ausgewählt, und nur
-die Einträge für die Top 3 Platzierungen jeder Saison werden
-gefiltert. Zudem wird sichergestellt, dass die
-<strong>Saison</strong> als numerischer Wert vorliegt:</p>
+<strong>Rank</strong> und <strong>Club</strong> ausgewählt, und nur die
+Einträge für die Top 3 Platzierungen jeder Saison werden gefiltert.
+Zudem wird sichergestellt, dass die <strong>Saison</strong> als
+numerischer Wert vorliegt:</p>
 
 `data_top3 \<- data %\>% select(Season, Rank, Club) %\>% filter(Rank %in% 1:3)`
 
 <p>Die Daten werden dann nach <strong>Club</strong> und
-<strong>Saison</strong> sortiert, um den Verlauf der Top 3
-Platzierungen pro Club über die Jahre hinweg zu analysieren:</p>
+<strong>Saison</strong> sortiert, um den Verlauf der Top 3 Platzierungen
+pro Club über die Jahre hinweg zu analysieren:</p>
 
 <code>arrange(Club, Season)</code>
 
-
-
 ## Überprüfung, ob ein Club in der nächsten Saison wieder in den Top 3 ist
 
-
-<p>Im nächsten Schritt wird geprüft, ob ein Club in der
-darauffolgenden Saison erneut in den Top 3 ist. Hierzu wird für
-jeden Club die <strong>nächste Saison</strong> ermittelt und
-überprüft, ob sie aufeinanderfolgend sind:</p>
+<p>Im nächsten Schritt wird geprüft, ob ein Club in der darauffolgenden
+Saison erneut in den Top 3 ist. Hierzu wird für jeden Club die
+<strong>nächste Saison</strong> ermittelt und überprüft, ob sie
+aufeinanderfolgend sind:</p>
 
 <code>mutate(Next_season = lead(Season))</code>
 
-<p>Es wird ein neuer Indikator <code>Is_consecutive</code>
-eingeführt, der überprüft, ob die Saison auf die vorherige Saison
-folgt (also ob der Club in zwei aufeinanderfolgenden Saisons unter
-den Top 3 ist):</p>
+<p>Es wird ein neuer Indikator <code>Is_consecutive</code> eingeführt,
+der überprüft, ob die Saison auf die vorherige Saison folgt (also ob der
+Club in zwei aufeinanderfolgenden Saisons unter den Top 3 ist):</p>
 
 `Is_consecutive = ifelse(Next_season == Season + 1, 1, 0)`
 
-<p>Wenn der Club in zwei aufeinanderfolgenden Saisons in den Top 3
-ist, wird der Club der nächsten Saison als
-<strong>Next_season_top3</strong> gespeichert:</p>
+<p>Wenn der Club in zwei aufeinanderfolgenden Saisons in den Top 3 ist,
+wird der Club der nächsten Saison als <strong>Next_season_top3</strong>
+gespeichert:</p>
 
 `Next_season_top3 = ifelse(Is_consecutive == 1, lead(Club), NA)`
 
@@ -1226,12 +1307,11 @@ tatsächlich wieder unter den Top 3 ist, und die Variable
 
 ## Berechnung der Wahrscheinlichkeit
 
-
 <p>Nun wird die Wahrscheinlichkeit berechnet, dass ein Club, der in
 einer Saison unter den Top 3 ist, dies auch in der nächsten Saison
-schafft. Dies erfolgt, indem die Anzahl der Fälle, in denen ein Club
-in aufeinanderfolgenden Saisons unter den Top 3 war, durch die
-Gesamtzahl der überprüften Zeilen geteilt wird:</p>
+schafft. Dies erfolgt, indem die Anzahl der Fälle, in denen ein Club in
+aufeinanderfolgenden Saisons unter den Top 3 war, durch die Gesamtzahl
+der überprüften Zeilen geteilt wird:</p>
 
 `prob_repeated \<- sum(data_top3\$Repeated_top3, na.rm = TRUE)/ nrow(data_top3)`
 
@@ -1242,13 +1322,13 @@ ausgegeben:</p>
 
 ## Visualisierung der Wahrscheinlichkeit
 
-<p>Abschließend wird ein Diagramm erstellt, das zeigt, ob ein Club
-in aufeinanderfolgenden Saisons wieder in den Top 3 war. Die
-<strong>Reihenfolge der Saisons</strong> wird auf der x-Achse
-angezeigt, und die <strong>Wiederholung der Top 3
-Platzierung</strong> (1 = Ja, 0 = Nein) auf der y-Achse. Das
-Diagramm wird mit den <code>geom_col()</code>-Funktionen erstellt,
-die Balken für jede Saison zeichnen:</p>
+<p>Abschließend wird ein Diagramm erstellt, das zeigt, ob ein Club in
+aufeinanderfolgenden Saisons wieder in den Top 3 war. Die
+<strong>Reihenfolge der Saisons</strong> wird auf der x-Achse angezeigt,
+und die <strong>Wiederholung der Top 3 Platzierung</strong> (1 = Ja, 0 =
+Nein) auf der y-Achse. Das Diagramm wird mit den
+<code>geom_col()</code>-Funktionen erstellt, die Balken für jede Saison
+zeichnen:</p>
 
 `ggplot(data_top3, aes(x = Season, y = Repeated_top3)) + geom_col(fill = 'steelblue')`
 
@@ -1319,21 +1399,27 @@ ggplot(probabilities, aes(x = "", y = Probability, fill = Category)) +
 
 ```
 
-
 # Titelverteidigung
 
 **Datenvorbereitung: Nur relevante Spalten auswählen und sortieren**
 
--   Die Daten werden gefiltert, sodass nur Meisterteams (Rank == 1) berücksichtigt werden. Anschließend wird mit der lead()-Funktion überprüft, ob der Meistertitel im nächsten Jahr verteidigt wurde. Ergebnisse werden in der Spalte Repeated gespeichert.
+-   Die Daten werden gefiltert, sodass nur Meisterteams (Rank == 1)
+    berücksichtigt werden. Anschließend wird mit der lead()-Funktion
+    überprüft, ob der Meistertitel im nächsten Jahr verteidigt wurde.
+    Ergebnisse werden in der Spalte Repeated gespeichert.
 
 **Summierung der Wiederholungen und Nicht-Wiederholungen**:
 
--   Die Anzahl der Titelverteidigungen (Repeated == 1) und der Nicht-Titelverteidigungen (Repeated == 0) wird berechnet. Die Ergebnisse werden in Prozent umgerechnet und in einem sauberen Format dargestellt.
-
+-   Die Anzahl der Titelverteidigungen (Repeated == 1) und der
+    Nicht-Titelverteidigungen (Repeated == 0) wird berechnet. Die
+    Ergebnisse werden in Prozent umgerechnet und in einem sauberen
+    Format dargestellt.
 
 **Diagramm erstellen**:
 
--   Ein Balkendiagramm zeigt die Häufigkeit der Titelverteidigungen. Prozentsätze werden oberhalb der Balken angezeigt, und Farben sowie Formatierungen sorgen für eine ansprechende Darstellung.
+-   Ein Balkendiagramm zeigt die Häufigkeit der Titelverteidigungen.
+    Prozentsätze werden oberhalb der Balken angezeigt, und Farben sowie
+    Formatierungen sorgen für eine ansprechende Darstellung.
 
 ```{r}
 # Datenvorbereitung: Nur relevante Spalten auswählen und sortieren
@@ -1376,41 +1462,70 @@ ggplot(repeat_summary, aes(x = "", y = Prozent, fill = Status)) +
 # Wiederholung der Meistertitel
 
 <ul>
+
 <li>**Datenvorbereitung**:</li>
+
 <ul>
 
-<li>Nur Meisterteams (Rank == 1) werden ausgewählt, und die Daten werden nach der Saison (Season) sortiert.</li>
+<li>Nur Meisterteams (Rank == 1) werden ausgewählt, und die Daten werden
+nach der Saison (Season) sortiert.</li>
+
 <li>`data_WW <- data %>% filter(Rank == 1) %>% arrange(Season)`</li>
+
 </ul>
 
 <li>**Berechnung der Titelverteidigungen**:</li>
+
 <ul>
-<li>Überprüfung, ob ein Club den Titel in der nächsten Saison verteidigt hat.</li>
+
+<li>Überprüfung, ob ein Club den Titel in der nächsten Saison verteidigt
+hat.</li>
+
 <li>`data_WW <- data_WW %>% mutate(Next_Champion = lead(Club), Repeated_Champion = ifelse(Club == Next_Champion, 1, 0))`</li>
+
 </ul>
 
 <li>**Berechnung der Wahrscheinlichkeit für Titelverteidigungen**:</li>
+
 <ul>
-vBerechnung des Anteils der Meister, die den Titel verteidigt haben.</li>
+
+vBerechnung des Anteils der Meister, die den Titel verteidigt haben.
+
+</li>
+
 <li>`prob_repeated <- sum(data_WW$Repeated_Champion, na.rm = TRUE) / (nrow(data_WW) - 1)`</li>
+
 </ul>
 
 <li>**Berechnung der Häufigkeit der Meistertitel pro Team**:</li>
+
 <ul>
+
 <li>Anzahl der gewonnenen Meistertitel je Team.</li>
+
 <li>`meister_count <- table(data_WW$Club)`</li>
+
 </ul>
 
 <li>**Wiederholung der Meistertitel im Vorjahr überprüfen**:</li>
+
 <ul>
+
 <li>Überprüfung, ob ein Club den Titel im Vorjahr gewonnen hat.</li>
+
 <li>`data_WW <- data_WW %>% mutate(Previous_Champion = lag(Club), Repeated_Champion = ifelse(Club == Previous_Champion, 1, 0))`</li>
+
 </ul>
 
 <li>**Visualisierung der Wiederholungen mit einem Balkendiagramm**:</li>
+
 <ul>
-<li>Ein Balkendiagramm zeigt die Wiederholung der Meistertitel je Saison und Club.</li>
+
+<li>Ein Balkendiagramm zeigt die Wiederholung der Meistertitel je Saison
+und Club.</li>
+
 </ul>
+
 </ul>
 
 ```{r}
@@ -1466,22 +1581,21 @@ ggplot(data_WW, aes(x = Season, y = Repeated_Champion, fill = Club)) +
 
 ```
 
-
 # Titelverteidigungen nach Verein
-
 
 **Datenvorbereitung**:
 
--   Auswahl der Meisterteams (Rank == 1) und Sortierung nach Saison. Überprüfung, ob ein Team den Titel im nächsten Jahr verteidigt hat.
-   
+-   Auswahl der Meisterteams (Rank == 1) und Sortierung nach Saison.
+    Überprüfung, ob ein Team den Titel im nächsten Jahr verteidigt hat.
+
 **Gruppierung und Berechnung**:
 
--   Titelverteidigungen werden gefiltert und pro Verein gezählt. Der Anteil der Verteidigungen wird berechnet.
-   
+-   Titelverteidigungen werden gefiltert und pro Verein gezählt. Der
+    Anteil der Verteidigungen wird berechnet.
+
 **Visualisierung**:
 
 -   Balkendiagramm zeigt den Anteil der Titelverteidigungen pro Verein.
-
 
 ```{r}
 
@@ -1517,10 +1631,23 @@ ggplot(repeat_club_summary, aes(x = reorder(Club, -Anzahl), y = Prozent, fill = 
         plot.title = element_text(hjust = 0.5))
 
 ```
+
 # Simulation der Tabelle Zukünftiger Saisons
-In den vorherigen Punkten wurden verschiedene Variablen identifiziert, die einen potenziellen Einfluss auf die Platzierung haben könnten, darunter **Pts (Punkte), Marktwert_in_Mio_Euro (Marktwert in Millionen Euro), GD (Tordifferenz) und Pl (gespielte Spiele)**. Diese Variablen werden nun in einem Simulationsmodell genutzt, um zukünftige Saisons zu prognostizieren und darauf basierend eine detaillierte und fundierte Tabelle zu erstellen, die mögliche Platzierungen der Teams in zukünftigen Wettbewerben abbildet. Ziel ist es, die Dynamiken und Zusammenhänge zwischen diesen Schlüsselvariablen besser zu verstehen und realistische Vorhersagen über den Verlauf zukünftiger Saisons zu ermöglichen.
+
+In den vorherigen Punkten wurden verschiedene Variablen identifiziert,
+die einen potenziellen Einfluss auf die Platzierung haben könnten,
+darunter **Pts (Punkte), Marktwert_in_Mio_Euro (Marktwert in Millionen
+Euro), GD (Tordifferenz) und Pl (gespielte Spiele)**. Diese Variablen
+werden nun in einem Simulationsmodell genutzt, um zukünftige Saisons zu
+prognostizieren und darauf basierend eine detaillierte und fundierte
+Tabelle zu erstellen, die mögliche Platzierungen der Teams in
+zukünftigen Wettbewerben abbildet. Ziel ist es, die Dynamiken und
+Zusammenhänge zwischen diesen Schlüsselvariablen besser zu verstehen und
+realistische Vorhersagen über den Verlauf zukünftiger Saisons zu
+ermöglichen.
 
 ## Korrelation zwischen Variabeln
+
 ```{r exploration}
 # Korrelation zwischen Variablen (z. B. Marktwert, Tore, Punkte)
 correlation_matrix <- data %>% 
@@ -1550,19 +1677,25 @@ print(plot)
 
 ```
 
-
 Korrelationsmatrix:
 
--   Der Code erstellt eine Korrelationsmatrix zwischen den Variablen Pts (Punkte), Marktwert_in_Mio_Euro (Marktwert in Millionen Euro), GD (Torverhältnis) und Pl (Platzierung).
--   Mit der Funktion cor() wird die lineare Beziehung (Korrelation) zwischen den Variablen berechnet und als Matrix angezeigt.
+-   Der Code erstellt eine Korrelationsmatrix zwischen den Variablen Pts
+    (Punkte), Marktwert_in_Mio_Euro (Marktwert in Millionen Euro), GD
+    (Torverhältnis) und Pl (Platzierung).
+-   Mit der Funktion cor() wird die lineare Beziehung (Korrelation)
+    zwischen den Variablen berechnet und als Matrix angezeigt.
 
 Visualisierung:
 
--   Der Befehl ggplot erstellt ein Streudiagramm, das den Zusammenhang zwischen dem Marktwert (auf der x-Achse) und den Punkten (auf der y-Achse) zeigt.
--   Jede Darstellung wird nach dem Club eingefärbt, um die verschiedenen Clubs zu unterscheiden.
--   Das Diagramm verwendet geom_point(), um die Datenpunkte darzustellen, und theme_minimal(), um das Layout zu vereinfachen.
--   Die Achsentitel und der Titel des Diagramms werden mit labs() hinzugefügt.
-
+-   Der Befehl ggplot erstellt ein Streudiagramm, das den Zusammenhang
+    zwischen dem Marktwert (auf der x-Achse) und den Punkten (auf der
+    y-Achse) zeigt.
+-   Jede Darstellung wird nach dem Club eingefärbt, um die verschiedenen
+    Clubs zu unterscheiden.
+-   Das Diagramm verwendet geom_point(), um die Datenpunkte
+    darzustellen, und theme_minimal(), um das Layout zu vereinfachen.
+-   Die Achsentitel und der Titel des Diagramms werden mit labs()
+    hinzugefügt.
 
 ## Modellerstellung: Punktesimulation
 
@@ -1587,57 +1720,83 @@ MAE <- mean(abs(predictions - test_data$Pts))
 cat("Mean Absolute Error (MAE):", MAE)
 ```
 
-
 ### Erklärung der Datenvorbereitung:
 
 **set.seed(42):**
 
--   Diese Funktion setzt den Zufallszahlengenerator auf einen festen Wert (hier 42), sodass alle zufälligen Operationen (wie die Datenaufteilung) immer wieder gleich durchgeführt werden. Dies sorgt für die Reproduzierbarkeit der Ergebnisse.
+-   Diese Funktion setzt den Zufallszahlengenerator auf einen festen
+    Wert (hier 42), sodass alle zufälligen Operationen (wie die
+    Datenaufteilung) immer wieder gleich durchgeführt werden. Dies sorgt
+    für die Reproduzierbarkeit der Ergebnisse.
 
-**createDataPartition(data$Pts, p = 0.8, list = FALSE):**
+**createDataPartition(data\$Pts, p = 0.8, list = FALSE):**
 
--   Diese Funktion aus dem caret-Paket teilt die Daten in Trainings- und Testdatensätze auf.
--   data$Pts gibt an, dass die Aufteilung auf der Zielvariable Pts (Punkte) basiert.
--   p = 0.8 bedeutet, dass 80% der Daten für das Training und 20% für das Testen verwendet werden.
--   list = FALSE sorgt dafür, dass das Ergebnis als Indexvektor zurückgegeben wird, der später verwendet wird, um die Trainings- und Testdaten zu extrahieren.
+-   Diese Funktion aus dem caret-Paket teilt die Daten in Trainings- und
+    Testdatensätze auf.
+-   data\$Pts gibt an, dass die Aufteilung auf der Zielvariable Pts
+    (Punkte) basiert.
+-   p = 0.8 bedeutet, dass 80% der Daten für das Training und 20% für
+    das Testen verwendet werden.
+-   list = FALSE sorgt dafür, dass das Ergebnis als Indexvektor
+    zurückgegeben wird, der später verwendet wird, um die Trainings- und
+    Testdaten zu extrahieren.
 
 **train_data und test_data:**
 
--   train_data enthält 80% der originalen Daten, die für das Training des Modells verwendet werden.
--   test_data enthält die restlichen 20%, die für die Evaluierung des Modells genutzt werden.
+-   train_data enthält 80% der originalen Daten, die für das Training
+    des Modells verwendet werden.
+-   test_data enthält die restlichen 20%, die für die Evaluierung des
+    Modells genutzt werden.
 
 ### Erklärung des Random Forest Modells:
 
-**randomForest(Pts ~ Marktwert_in_Mio_Euro + GD + Pl, data = train_data, ntree = 500, importance = TRUE):**
+**randomForest(Pts \~ Marktwert_in_Mio_Euro + GD + Pl, data =
+train_data, ntree = 500, importance = TRUE):**
 
--   Hier wird ein Random Forest-Modell trainiert, um die Zielvariable Pts (Punkte) basierend auf den Prädiktoren Marktwert_in_Mio_Euro (Marktwert), GD (Torverhältnis) und Pl (Platzierung) vorherzusagen.
--   ntree = 500 gibt an, dass 500 Entscheidungsbäume im Random Forest verwendet werden.
--   importance = TRUE sorgt dafür, dass die Wichtigkeit der einzelnen Variablen im Modell berechnet und später visualisiert wird.
+-   Hier wird ein Random Forest-Modell trainiert, um die Zielvariable
+    Pts (Punkte) basierend auf den Prädiktoren Marktwert_in_Mio_Euro
+    (Marktwert), GD (Torverhältnis) und Pl (Platzierung) vorherzusagen.
+-   ntree = 500 gibt an, dass 500 Entscheidungsbäume im Random Forest
+    verwendet werden.
+-   importance = TRUE sorgt dafür, dass die Wichtigkeit der einzelnen
+    Variablen im Modell berechnet und später visualisiert wird.
 
 **print(model):**
 
--   Gibt eine detaillierte Zusammenfassung des Random Forest Modells aus, einschliesslich der Fehlermasse und der Anzahl der Bäume, die im Modell verwendet werden.
+-   Gibt eine detaillierte Zusammenfassung des Random Forest Modells
+    aus, einschliesslich der Fehlermasse und der Anzahl der Bäume, die
+    im Modell verwendet werden.
 
 **varImpPlot(model):**
 
--   Visualisiert die Wichtigkeit der einzelnen Variablen für die Vorhersage der Zielvariable (Punkte).
--   Je grösser die Wichtigkeit einer Variablen, desto mehr trägt sie zur Vorhersage bei.
+-   Visualisiert die Wichtigkeit der einzelnen Variablen für die
+    Vorhersage der Zielvariable (Punkte).
+-   Je grösser die Wichtigkeit einer Variablen, desto mehr trägt sie zur
+    Vorhersage bei.
 
 ### Erklärung der Modellbewertung:
 
-**predictions <- predict(model, test_data):**
+**predictions \<- predict(model, test_data):**
 
--   Mit der predict-Funktion werden Vorhersagen für die Zielvariable Pts anhand des trainierten Random Forest Modells auf den Testdaten (test_data) gemacht.
+-   Mit der predict-Funktion werden Vorhersagen für die Zielvariable Pts
+    anhand des trainierten Random Forest Modells auf den Testdaten
+    (test_data) gemacht.
 
 **Berechnung des Mean Absolute Error (MAE):**
 
--   Der Mean Absolute Error (MAE) ist ein Maß für die durchschnittliche Abweichung der Vorhersagen vom tatsächlichen Wert. Es wird berechnet als der Mittelwert der absoluten Differenzen zwischen den vorhergesagten Punkten (predictions) und den tatsächlichen Punkten im Testdatensatz (test_data$Pts).
--   Die Formel lautet: $$\text{MAE} = \frac{1}{n} \sum_{i=1}^{n} \left| \text{Vorhersage}_i - \text{tatsächlicher Wert}_i \right|$$
+-   Der Mean Absolute Error (MAE) ist ein Maß für die durchschnittliche
+    Abweichung der Vorhersagen vom tatsächlichen Wert. Es wird berechnet
+    als der Mittelwert der absoluten Differenzen zwischen den
+    vorhergesagten Punkten (predictions) und den tatsächlichen Punkten
+    im Testdatensatz (test_data\$Pts).
+-   Die Formel lautet:
+    $$\text{MAE} = \frac{1}{n} \sum_{i=1}^{n} \left| \text{Vorhersage}_i - \text{tatsächlicher Wert}_i \right|$$
 -   Dabei ist n die Anzahl der Datenpunkte im Testdatensatz.
 
 **cat("Mean Absolute Error (MAE):", MAE):**
 
--   Die cat-Funktion gibt den berechneten MAE-Wert auf der Konsole aus, um die Modellbewertung zu zeigen.
+-   Die cat-Funktion gibt den berechneten MAE-Wert auf der Konsole aus,
+    um die Modellbewertung zu zeigen.
 
 ## Simulation der zukünftigen Tabelle
 
@@ -1704,36 +1863,59 @@ future_optimistic
 future_conservative
 future_pessimistic
 ```
+
 ### Erklärung des Codes:
+
 **Szenarien definieren:**
 
--   Die Funktion simulate_scenario simuliert das Szenario für eine Saison. Basierend auf dem Szenario (optimistic, conservative oder pessimistic) wird der Marktwert der Teams angepasst.
--   Optimistisch: Der Marktwert wird um 10% + einem saisonalen Faktor erhöht.
--   Pessimistisch: Der Marktwert wird um 10% + einem saisonalen Faktor reduziert.
--   Konservativ: Der Marktwert bleibt weitgehend unverändert, außer für den saisonalen Faktor.
+-   Die Funktion simulate_scenario simuliert das Szenario für eine
+    Saison. Basierend auf dem Szenario (optimistic, conservative oder
+    pessimistic) wird der Marktwert der Teams angepasst.
+-   Optimistisch: Der Marktwert wird um 10% + einem saisonalen Faktor
+    erhöht.
+-   Pessimistisch: Der Marktwert wird um 10% + einem saisonalen Faktor
+    reduziert.
+-   Konservativ: Der Marktwert bleibt weitgehend unverändert, außer für
+    den saisonalen Faktor.
 
 **Vorhersagen generieren:**
 
--   Nach der Anpassung des Marktwertes wird das trainierte Modell (model) verwendet, um die vorhergesagten Punkte für jedes Team zu berechnen.
+-   Nach der Anpassung des Marktwertes wird das trainierte Modell
+    (model) verwendet, um die vorhergesagten Punkte für jedes Team zu
+    berechnen.
 
 **Simulation der Spiele:**
 
--   Es wird angenommen, dass jedes Team 38 Spiele hat. Zufällige Schwankungen werden hinzugefügt, um eine realistische Unsicherheit zu simulieren.
--   Negative Punkte werden vermieden, indem predicted_Pts auf null gesetzt wird, wenn der Wert negativ ist.
+-   Es wird angenommen, dass jedes Team 38 Spiele hat. Zufällige
+    Schwankungen werden hinzugefügt, um eine realistische Unsicherheit
+    zu simulieren.
+-   Negative Punkte werden vermieden, indem predicted_Pts auf null
+    gesetzt wird, wenn der Wert negativ ist.
 
 **Rangliste erstellen:**
 
--   Die Teams werden basierend auf den vorhergesagten Punkten sortiert und die Top 12 Teams werden ausgewählt. Jedes Team wird nur einmal in der Rangliste aufgenommen.
+-   Die Teams werden basierend auf den vorhergesagten Punkten sortiert
+    und die Top 12 Teams werden ausgewählt. Jedes Team wird nur einmal
+    in der Rangliste aufgenommen.
 
 **Simulation für mehrere Saisons:**
 
--   Die Funktion simulate_seasons führt die Simulation für mehrere Jahre durch. Für jedes Jahr wird ein kleiner saisonaler Faktor (season_factor) generiert, der zufällig zwischen -0.05 und 0.05 liegt.
--   Die simulierten Ergebnisse für jedes Jahr werden in einer Liste gespeichert und anschließend zu einem einzelnen Datensatz zusammengeführt.
+-   Die Funktion simulate_seasons führt die Simulation für mehrere Jahre
+    durch. Für jedes Jahr wird ein kleiner saisonaler Faktor
+    (season_factor) generiert, der zufällig zwischen -0.05 und 0.05
+    liegt.
+-   Die simulierten Ergebnisse für jedes Jahr werden in einer Liste
+    gespeichert und anschließend zu einem einzelnen Datensatz
+    zusammengeführt.
 
 **Simulation ausführen:**
 
--   Die Simulation wird für die Jahre 2024/25, 2025/26 und 2026/27 durchgeführt, für jedes Szenario (optimistisch, konservativ, pessimistisch).
--   Die Ergebnisse für jedes Szenario werden in den Variablen future_optimistic, future_conservative und future_pessimistic gespeichert und anschließend angezeigt.
+-   Die Simulation wird für die Jahre 2024/25, 2025/26 und 2026/27
+    durchgeführt, für jedes Szenario (optimistisch, konservativ,
+    pessimistisch).
+-   Die Ergebnisse für jedes Szenario werden in den Variablen
+    future_optimistic, future_conservative und future_pessimistic
+    gespeichert und anschließend angezeigt.
 
 ## Visualisierung der Simulationsergebnisse
 
@@ -1754,36 +1936,49 @@ plot_simulation(future_pessimistic, "Pessimistisches Szenario")
 
 ### plot_simulation Funktion:
 
-*Diese Funktion nimmt simulierte Daten (simulated_data) und einen Titel (title) als Eingabewerte und erstellt ein Balkendiagramm, das die Tabellenpositionen (basierend auf den vorhergesagten Punkten) für jedes Team anzeigt.*
+*Diese Funktion nimmt simulierte Daten (simulated_data) und einen Titel
+(title) als Eingabewerte und erstellt ein Balkendiagramm, das die
+Tabellenpositionen (basierend auf den vorhergesagten Punkten) für jedes
+Team anzeigt.*
 `ggplot(simulated_data, aes(x = reorder(Club, -predicted_Pts), y = predicted_Pts, fill = Season)):`
 
--   aes(x = reorder(Club, -predicted_Pts), y = predicted_Pts): Die Club-Namen werden auf der x-Achse angezeigt und die predicted_Pts (vorhergesagte Punkte) auf der y-Achse. Die reorder-Funktion sortiert die Clubs basierend auf den vorhergesagten Punkten in absteigender Reihenfolge.
--   fill = Season: Die Balken werden nach der Saison eingefärbt, um eine Unterscheidung zwischen den verschiedenen Saisons zu ermöglichen.
+-   aes(x = reorder(Club, -predicted_Pts), y = predicted_Pts): Die
+    Club-Namen werden auf der x-Achse angezeigt und die predicted_Pts
+    (vorhergesagte Punkte) auf der y-Achse. Die reorder-Funktion
+    sortiert die Clubs basierend auf den vorhergesagten Punkten in
+    absteigender Reihenfolge.
+-   fill = Season: Die Balken werden nach der Saison eingefärbt, um eine
+    Unterscheidung zwischen den verschiedenen Saisons zu ermöglichen.
 
 `geom_bar(stat = "identity", position = position_dodge()):`
 
--   geom_bar(stat = "identity") erstellt ein Balkendiagramm, bei dem die Höhe der Balken direkt den Werten in predicted_Pts entspricht.
--   position_dodge() sorgt dafür, dass die Balken für verschiedene Saisons nebeneinander angezeigt werden, anstatt übereinander.
+-   geom_bar(stat = "identity") erstellt ein Balkendiagramm, bei dem die
+    Höhe der Balken direkt den Werten in predicted_Pts entspricht.
+-   position_dodge() sorgt dafür, dass die Balken für verschiedene
+    Saisons nebeneinander angezeigt werden, anstatt übereinander.
 
 `coord_flip(): Diese Funktion dreht das Diagramm so, dass die Clubs auf der y-Achse erscheinen und die Balken horizontal verlaufen.`
 
--   theme_minimal(): Setzt ein minimalistisches Layout für das Diagramm, wodurch es sauber und übersichtlich aussieht.
--   labs(title = title, x = "Club", y = "Punkte"): Definiert den Titel des Diagramms sowie die Achsentitel.
+-   theme_minimal(): Setzt ein minimalistisches Layout für das Diagramm,
+    wodurch es sauber und übersichtlich aussieht.
+-   labs(title = title, x = "Club", y = "Punkte"): Definiert den Titel
+    des Diagramms sowie die Achsentitel.
 
 *Visualisierungen für die verschiedenen Szenarien:*
 
 `Die Funktion wird für jedes Szenario (future_optimistic, future_conservative, future_pessimistic) aufgerufen und die entsprechenden Diagramme angezeigt:`
 
--   Optimistisches Szenario: Visualisiert die Tabellenpositionen für das optimistische Szenario.
--   Konservatives Szenario: Visualisiert die Tabellenpositionen für das konservative Szenario.
--   Pessimistisches Szenario: Visualisiert die Tabellenpositionen für das pessimistisches Szenario.
-
+-   Optimistisches Szenario: Visualisiert die Tabellenpositionen für das
+    optimistische Szenario.
+-   Konservatives Szenario: Visualisiert die Tabellenpositionen für das
+    konservative Szenario.
+-   Pessimistisches Szenario: Visualisiert die Tabellenpositionen für
+    das pessimistisches Szenario.
 
 ## Zusammenfassung und Interpretation Basierend auf den Szenarien:
 
--   Optimistisches Szenario: Höhere Marktwerte führen zu besseren Ergebnissen für die meisten Teams
+-   Optimistisches Szenario: Höhere Marktwerte führen zu besseren
+    Ergebnissen für die meisten Teams
 -   Konservatives Szenario: Stabile Leistung wird erwartet.
--   Pessimistisches Szenario: Leistungseinbrüche bei sinkenden Marktwerten.
-
-
-
+-   Pessimistisches Szenario: Leistungseinbrüche bei sinkenden
+    Marktwerten.
