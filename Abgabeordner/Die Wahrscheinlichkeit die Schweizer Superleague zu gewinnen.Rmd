@@ -1,6 +1,6 @@
 ---
-title: "Super League Analysis Report"
-author: "Team Project Alejndro Scheifele, Sébastien Bagdasarianz "
+title: " Die Wahrscheinlichkeit die Schweizer Superleague zu gewinnen"
+author: "PRR Projekt von Alejndro Scheifele, Sébastien Bagdasarianz "
 date: "`r Sys.Date()`"
 output: 
   html_notebook:
@@ -10,14 +10,6 @@ output:
     theme: cosmo
 editor_options: 
   chunk_output_type: inline
-  markdown: 
-    wrap: 72
----
-
----
-title: " Die Wahrscheinlichkeit die Schweizer Superleague zu gewinnen"
-output: html_notebook
-editor_options: 
   markdown: 
     wrap: 72
 ---
