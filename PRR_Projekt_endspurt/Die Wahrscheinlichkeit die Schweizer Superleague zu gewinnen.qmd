@@ -1,6 +1,6 @@
 ---
-title: " Die Wahrscheinlichkeit die Schweizer Superleague zu gewinnen"
-author: "PRR Projekt von Alejndro Scheifele, Sébastien Bagdasarianz "
+title: " Die Wahrscheinlichkeit die Schweizer Fussballmeisterschaft (Superleague) zu gewinnen"
+author: "PRR Projekt von Alejandro Scheifele, Sébastien Bagdasarianz "
 date: "`r Sys.Date()`"
 output: 
   html_notebook:
@@ -19,29 +19,28 @@ editor_options:
 Diese Analyse untersucht folgende Aspekte der Super League:
 
 <ul>
-<li>Die Wahrscheinlichkeit, die Super League zu gewinnen, basierend auf dem Marktwert.</li>
+<li>Die Wahrscheinlichkeit, basierend auf dem Marktwert der einzelnen Spieler und der gesamten Mannschaft die Super League zu gewinnen.</li>
     
-<li>Eine Analyse der geschossenen und erhaltenen Tore im bezug auf die Platzierung.</li>
+<li>Die Tabellenposition in Relation zu den erzielten und erhaltenen Toren.</li>
 
-<li>Die Wahrscheinlichkeit, einen Platzierungsbereich 2 mal in folge zu erreichen.</li>
+<li>Die Wahrscheinlichkeit, einen Platzierungsbereich zweimal in Folge zu erreichen.</li>
 </ul>
 
-# Zieldefinierung
+# Zieldefinition
 
-<br>In dieser Challenge haben wir mehrere Ziele:
-
-<ul>
-
-<li>Marktwert</li>
+Mit dieser Analyse zeigen wir anhand der beiden Faktoren Marktwert und aktueller Position in der Meisterschaftstabelle (Ranking) die Wahrscheinlichkeit für den Gewinn der aktuellen Meisterschaft.
 
 <ul>
 
-<li>Wahrscheinlichkeit Top 3 mit Top-3-Marktwert</li>
+<li>Anhand des Marktwerts</li>
 
-<li>Wahrscheinlichkeit Top 5 mit Top-5-Marktwert</li>
+<ul>
 
-<li>Wahrscheinlichkeit in die Top 5 mit den 5 schlechtesten
-Marktwerten</li>
+<li>Wahrscheinlichkeit einer Platzierung in den Top 3 mit einem Top-3 -Marktwert</li>
+
+<li>Wahrscheinlichkeit einer Platzierung in den Top 5 mit einem Top-5 -Marktwert</li>
+
+<li>Wahrscheinlichkeit einer Top 5 Platzierung mit den 5 tiefsten Marktwerten</li>
 
 </ul>
 
@@ -49,16 +48,15 @@ Marktwerten</li>
 
 <ul>
 
-<li>Wahrscheinlichkeit einer Meisterschaft in Folge</li>
+<li>Wahrscheinlichkeit eines Titelgewinns in Folge</li>
 
-<li>Wahrscheinlichkeit, zwei Mal nacheinander in die Top 3 zu
-kommen</li>
+<li>Wahrscheinlichkeit, zweimal nacheinander in die Top 3 zu kommen</li>
 
 <li>Relation von Torverhältnis und Ranking</li>
 
 <li>Relation der geschossenen Tore zum Ranking</li>
 
-<li>Relation der kassierten Tore zum Ranking</li>
+<li>Relation der erhaltenen Gegentore zum Ranking</li>
 
 </ul>
 
@@ -73,9 +71,18 @@ kommen</li>
 
 # Die Daten und unser Dataframe
 
-Wir haben aus Transfermarkt.com die daten aller saisons von 2004 bis
+Wir haben auf der Website von Transfermarkt die Daten aller Saisons von 2004 bis
 2024 in einen Dataframe zusammengefasst und diesen importiert.<br>
-Importiere libraries und den Data Frame:
+
+-   <code>#renv::init()</code>: Initialisiert ein neues renv-Projekt, das eine isolierte und reproduzierbare R-Umgebung erstellt.
+
+-   <code>renv::snapshot()</code>: Speichert den aktuellen Zustand der installierten Bibliotheken in einer renv.lock-Datei, um die Umgebung später reproduzieren zu können.
+
+-   <code>renv::restore()</code>: Stellt die Umgebung basierend auf der renv.lock-Datei wieder her, indem fehlende Pakete installiert werden.
+
+-   **Pakete laden**: Es werden zahlreiche Pakete wie dplyr, ggplot2, und tidymodels geladen, die für Datenmanipulation, Visualisierung, maschinelles Lernen und mehr genutzt werden.
+
+-   **Daten laden**: Die CSV-Datei wird mit read.csv eingelesen und in das Objekt data gespeichert. Dieses wird anschließend in DF kopiert.
 
 ```{r}
 
@@ -133,8 +140,7 @@ data$Goals_conceded <- as.numeric(data$Goals_conceded)
 #head(data)
 ```
 
-<br>Es werden neue Spalten erstellt mit dem durchschnitlichen Marktwert
-pro Saison und dem Gewinnverhältnis von jeder Mannschaft. Der durchschnittliche Marktwert wird für zukünftige berechnungen benötigt und hier als Punktdiagramm dargestellt.
+<br>Es werden neue Spalten erstellt mit dem durchschnittlichen Marktwert pro Saison und dem Gewinnverhältnis von jeder Mannschaft. Der durchschnittliche Marktwert wird für zukünftige Berechnungen benötigt und hier als Punktdiagramm dargestellt.
 
 ```{r}
 data <- data %>%
@@ -173,7 +179,7 @@ Auf Grundlage eines Modells, das auf logistischer Regression und Monte-Carlo-Sim
 
 ## Die Berechnung
 
-<br> Um die Wahrscheinlichkeit zu berechnen, dass ein Team mit einem der drei höchsten Marktwerte in den Top 3 der Liga landet, wird schrittweise vorgegangen
+<br> Um die Wahrscheinlichkeit zu berechnen, dass ein Team mit einem der drei höchsten Marktwerten in den Top 3 der Liga landet, wird schrittweise vorgegangen
 
 Zunächst wird das Verhältnis der Teams mit den höchsten Marktwerten, die tatsächlich unter den Top 3 platziert waren, visualisiert. Anschließend wird die Wahrscheinlichkeit berechnet: <br><ul> <li>**Gesamtzahl der Teams mit höchstem
 Marktwert:** Diese Zahl entspricht der Gesamtanzahl der Einträge im DataFrame `Top3_Marktwert_Teams`.</li> <li>**Anzahl der Teams, die unter
@@ -338,15 +344,15 @@ Durchschnitt der Saison entspricht. - Werte kleiner als
 <p><strong>4. Wichtige Beobachtungen aus dem Plot</strong><br> -
 <strong>Lage der blauen Balken</strong>: Wenn die blauen Balken (Top `a`
 Teams) sich hauptsächlich bei höheren X-Werten (z.B. `> 1.5`) befinden,
-bedeutet das, dass die Top-Teams einen überdurchschnittlich hohen
+bedeutet es  dass die Top-Teams einen überdurchschnittlich hohen
 Marktwert haben. - <strong>Lage der roten Balken</strong>: Wenn die
 roten Balken vor allem bei X-Werten unter `1` konzentriert sind, zeigt
-das, dass die Teams außerhalb der Top `a` einen unterdurchschnittlichen
+es, dass die Teams außerhalb der Top `a` einen unterdurchschnittlichen
 Marktwert haben. - <strong>Verteilung der Marktwerte insgesamt</strong>:
 Ist die Verteilung <strong>rechtssteil</strong> (mit mehr Werten nahe
-`1` und einigen hohen Werten), zeigt das, dass nur wenige Teams extrem
+`1` und einigen hohen Werten)bedeutet dies, dass nur wenige Teams extrem
 hohe Marktwerte haben. Wenn die Verteilung eher gleichmäßig ist,
-bedeutet das, dass es keine großen Unterschiede zwischen den Teams
+bedeutet es, dass es keine großen Unterschiede zwischen den Teams
 gibt.</p>
 
 <p><strong>5. Beispiel-Erklärung des Funktionsaufrufs</strong><br>
@@ -363,7 +369,7 @@ abgrenzt.</p>
 Das Modell wird unter Verwendung der logistischen Regression erstellt,
 um die Wahrscheinlichkeit zu schätzen, dass ein Team in den Top 3
 landet, basierend auf verschiedenen Prädiktoren (z. B. Marktwert, Spiele
-gewonnen, Tor-Differenz).
+gewonnen, Tordifferenz).
 
 ### Verwendung der glm() Funktion:
 
@@ -440,8 +446,8 @@ Gewinnverhältnis (0.08638):
 
 GD (0.29147):
 
--   Der Koeffizient für GD (Tor-Differenz) zeigt, dass mit jedem Anstieg
-    der Tor-Differenz um 1 die Wahrscheinlichkeit für ein Team, in den
+-   Der Koeffizient für GD (Tordifferenz) zeigt, dass mit jedem Anstieg
+    der Tordifferenz um 1 die Wahrscheinlichkeit für ein Team, in den
     Top 3 zu kommen, steigt.
 -   Auch dieser Effekt ist statistisch nicht signifikant (p = 0.119).
 
@@ -696,7 +702,7 @@ simulated_results <- sim_res(model, simulated_values, Top3_Marktwert_Teams)
 <p><strong>Simulierte Variablen:</strong> Für jede der 1000 Simulationen
 werden zufällige Werte für die erklärenden Variablen gezogen. Dies
 hilft, eine Vielzahl von Szenarien zu simulieren, die sich aus
-verschiedenen Marktwerten, Gewinnverhältnissen und Tor-Differenzen
+verschiedenen Marktwerten, Gewinnverhältnissen und Tordifferenzen
 ergeben können.</p>
 
 <p><strong>Berechnung der Wahrscheinlichkeit
@@ -1101,7 +1107,7 @@ Platzierung und Tordifferenz darstellt.</li>
 <p>Die X-Achse stellt die <strong>Platzierung</strong> dar, während die
 Y-Achse die <strong>Tordifferenz</strong> zeigt.</p>
 
-## Geschossene Tore und erhaltene Tore
+## Geschossene Tore und Gegentore
 
 Das Vorgehen in den verschiedenen Abschnitt folgt einem einheitlichen Schema:
 
@@ -1787,7 +1793,7 @@ plot_simulation(future_pessimistic, "Pessimistisches Szenario")
 
 # Quellen
 
--   https://www.transfermarkt.ch
+-   https://www.transfermarkt.ch  (Zugriff am 11. November 2024)
 -   https://studyflix.de
 -   https://spaces.technik.fhnw.ch/storage/uploads/mml/2019/09/marcelsteinerskriptwahrscheinlichkeitstheorieundstatistik.pdf
 -   https://rstudio.github.io/renv/articles/renv.html
