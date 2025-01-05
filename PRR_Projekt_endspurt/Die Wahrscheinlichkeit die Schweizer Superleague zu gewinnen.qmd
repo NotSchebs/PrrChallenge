@@ -82,7 +82,7 @@ Wir haben auf der Website von Transfermarkt die Daten aller Saisons von 2004 bis
 
 -   **Pakete laden**: Es werden zahlreiche Pakete wie dplyr, ggplot2, und tidymodels geladen, die für Datenmanipulation, Visualisierung, maschinelles Lernen und mehr genutzt werden.
 
--   **Daten laden**: Die CSV-Datei wird mit read.csv eingelesen und in das Objekt data gespeichert. Dieses wird anschließend in DF kopiert.
+-   **Daten laden**: Die CSV-Datei wird mit read.csv eingelesen und in das Objekt data gespeichert. Dieses wird anschliessend in DF kopiert.
 
 ```{r}
 
@@ -121,7 +121,7 @@ DF <- data
 
 </ul>
 
-<p>Die Werte wurden anschließend in numerische Variablen umgewandelt, um
+<p>Die Werte wurden anschliessend in numerische Variablen umgewandelt, um
 Berechnungen durchführen zu können.</p>
 
 ```{r}
@@ -169,11 +169,11 @@ ggplot(data, aes(x = sub("^.*(\\d{2}/\\d{2})$", "\\1", data$Season), y = Durchsc
 
 # Wahrscheinlichkeit in die Top 3 zu gelangen mit Top 3 Marktwert
 
-<br>**Vorgehen** <br> Zunächst werden die Top-3-Teams nach Marktwert pro Saison identifiziert (also die drei Teams mit dem höchsten Marktwert in jeder Saison). Anschließend werden die Top-3-Mannschaften der jeweiligen Saison ermittelt und mit den Top-3-Marktwert-Teams verglichen.
+<br>**Vorgehen** <br> Zunächst werden die Top-3-Teams nach Marktwert pro Saison identifiziert (also die drei Teams mit dem höchsten Marktwert in jeder Saison). Anschliessend werden die Top-3-Mannschaften der jeweiligen Saison ermittelt und mit den Top-3-Marktwert-Teams verglichen.
 
 Aus diesen Daten wird die Wahrscheinlichkeit berechnet, wie häufig Teams mit den höchsten Marktwerten auch unter den Top-3-Platzierungen zu finden waren. Mithilfe der Gesamtanzahl der Top-3-Marktwert-Teams über alle Saisons hinweg kann das Verhältnis und somit die Wahrscheinlichkeit für eine Top-3-Platzierung bei einem Top-3-Marktwert bestimmt werden.
 
-Auf Grundlage eines Modells, das auf logistischer Regression und Monte-Carlo-Simulationen basiert, werden schließlich Vorhersagen für zukünftige Saisons getroffen.
+Auf Grundlage eines Modells, das auf logistischer Regression und Monte-Carlo-Simulationen basiert, werden schliesslich Vorhersagen für zukünftige Saisons getroffen.
 
 
 
@@ -181,7 +181,7 @@ Auf Grundlage eines Modells, das auf logistischer Regression und Monte-Carlo-Sim
 
 <br> Um die Wahrscheinlichkeit zu berechnen, dass ein Team mit einem der drei höchsten Marktwerten in den Top 3 der Liga landet, wird schrittweise vorgegangen
 
-Zunächst wird das Verhältnis der Teams mit den höchsten Marktwerten, die tatsächlich unter den Top 3 platziert waren, visualisiert. Anschließend wird die Wahrscheinlichkeit berechnet: <br><ul> <li>**Gesamtzahl der Teams mit höchstem
+Zunächst wird das Verhältnis der Teams mit den höchsten Marktwerten, die tatsächlich unter den Top 3 platziert waren, visualisiert. Anschliessend wird die Wahrscheinlichkeit berechnet: <br><ul> <li>**Gesamtzahl der Teams mit höchstem
 Marktwert:** Diese Zahl entspricht der Gesamtanzahl der Einträge im DataFrame `Top3_Marktwert_Teams`.</li> <li>**Anzahl der Teams, die unter
 den Top 3 waren:** Diese Zahl ergibt sich aus der Spalte `was_Top3`,
 die den Wert `TRUE` für Teams enthält, die in den Top 3 der Liga gelandet sind.</li></ul>
@@ -336,7 +336,7 @@ Marktwertklasse zu den Top `a` gehören und wie viele nicht.
 <strong>1</strong>: Diese Teams haben einen Marktwert, der ungefähr dem
 Durchschnitt der Saison entspricht. - Werte kleiner als
 <strong>1</strong> (z.B. 0.5): Diese Teams haben einen
-<strong>unterdurchschnittlichen</strong> Marktwert. - Werte größer als
+<strong>unterdurchschnittlichen</strong> Marktwert. - Werte grösser als
 <strong>1</strong> (z.B. 2 oder 3): Diese Teams haben einen
 <strong>überdurchschnittlichen</strong> Marktwert. Sie liegen deutlich
 über dem Durchschnitt der Saison.</p>
@@ -347,12 +347,12 @@ Teams) sich hauptsächlich bei höheren X-Werten (z.B. `> 1.5`) befinden,
 bedeutet es  dass die Top-Teams einen überdurchschnittlich hohen
 Marktwert haben. - <strong>Lage der roten Balken</strong>: Wenn die
 roten Balken vor allem bei X-Werten unter `1` konzentriert sind, zeigt
-es, dass die Teams außerhalb der Top `a` einen unterdurchschnittlichen
+es, dass die Teams ausserhalb der Top `a` einen unterdurchschnittlichen
 Marktwert haben. - <strong>Verteilung der Marktwerte insgesamt</strong>:
 Ist die Verteilung <strong>rechtssteil</strong> (mit mehr Werten nahe
 `1` und einigen hohen Werten)bedeutet dies, dass nur wenige Teams extrem
-hohe Marktwerte haben. Wenn die Verteilung eher gleichmäßig ist,
-bedeutet es, dass es keine großen Unterschiede zwischen den Teams
+hohe Marktwerte haben. Wenn die Verteilung eher gleichmässig ist,
+bedeutet es, dass es keine grossen Unterschiede zwischen den Teams
 gibt.</p>
 
 <p><strong>5. Beispiel-Erklärung des Funktionsaufrufs</strong><br>
@@ -631,7 +631,7 @@ erzeugt ein DataFrame mit allen simulierten Variablen und den
 berechneten Wahrscheinlichkeiten, dass ein Team in den Top 3 landet
 (<code>Probability_Top3</code>).</li>
 
-<li><strong>Binäre Variable (<code>Top</code>):</strong> Anschließend
+<li><strong>Binäre Variable (<code>Top</code>):</strong> Anschliessend
 wird eine binäre Variable (<code>Top</code>) erzeugt, die mit
 <code>rbinom()</code> zufällig generiert wird, basierend auf den
 berechneten Wahrscheinlichkeiten.</li>
@@ -870,7 +870,7 @@ sim_plot(simulated_results5, 5)
 ```
 ## Schlussfolgerung Wahrscheinlichkeit in die Top 5 zu kommen mit Top-5-Marktwert
 
-Die Auswertungen zeigen eine ähnliche Verteilung wie bei den Top 3, allerdings sind die Marktwerte geringer. Dies verdeutlicht, dass die Top 5 im Vergleich zum Marktwert weniger konsistent sind und es größere Unterschiede zwischen dem höchsten und dem niedrigsten Marktwert gibt.
+Die Auswertungen zeigen eine ähnliche Verteilung wie bei den Top 3, allerdings sind die Marktwerte geringer. Dies verdeutlicht, dass die Top 5 im Vergleich zum Marktwert weniger konsistent sind und es grössere Unterschiede zwischen dem höchsten und dem niedrigsten Marktwert gibt.
 
 
 # Wahrscheinlichkeit in die Top 5 zu kommen mit den 5 schlechtesten Marktwert
@@ -925,7 +925,7 @@ sim_plot(simulated_results5_low5, 5)
 ```
 ## Schlussfolgerung Wahrscheinlichkeit in die Top 5 zu kommen mit den 5 schlechtesten Marktwert
 
-Teams mit einem Top-5-Marktwert landen nur in etwa einem Drittel der Fälle tatsächlich unter den Top 5, was die Rolle von zusätzlichen Variablen in der Leistungsbewertung betont. Das Histogramm für simulierte Saisons zeigt eine ähnliche Verteilung wie die historische Analyse. Teams mit höheren relativen Marktwerten haben eine größere Wahrscheinlichkeit, in den Top 5 zu landen (blau). Gleichzeitig bleibt ein erheblicher Anteil von Teams mit hohen Marktwerten außerhalb der Top 5 (rot).
+Teams mit einem Top-5-Marktwert landen nur in etwa einem Drittel der Fälle tatsächlich unter den Top 5, was die Rolle von zusätzlichen Variablen in der Leistungsbewertung betont. Das Histogramm für simulierte Saisons zeigt eine ähnliche Verteilung wie die historische Analyse. Teams mit höheren relativen Marktwerten haben eine grössere Wahrscheinlichkeit, in den Top 5 zu landen (blau). Gleichzeitig bleibt ein erheblicher Anteil von Teams mit hohen Marktwerten ausserhalb der Top 5 (rot).
 Diese Simulation unterstreicht die Unsicherheiten und Schwankungen im Zusammenhang mit Marktwerten und Platzierungen. Jedoch ist eine überdurchschnittliche finanzielle Ausstattung (Marktwert) zwar hilfreich, aber nicht zwingend erforderlich für eine Top-5-Platzierung ist.
 
 # Korrelation zwischen Platzierung und Tordifferenz
@@ -1111,7 +1111,7 @@ Y-Achse die <strong>Tordifferenz</strong> zeigt.</p>
 
 Das Vorgehen in den verschiedenen Abschnitt folgt einem einheitlichen Schema:
 
--   Lineares Modell erstellen: Zunächst wird ein lineares Modell entwickelt, um den Zusammenhang zwischen den Variablen (z. B. Platzierung und Tordifferenz) zu analysieren. Die Regressionsgleichung in der Form $$GD = β₀ + β₁ × Rank + ε$$ beschreibt die Beziehung, wobei β₀ den Achsenabschnitt, β₁ die Steigung und ε den Fehlerterm darstellt. Die Funktion `summary(model)` liefert eine Übersicht der Modellergebnisse, einschließlich Regressionskoeffizienten, R-Quadrat und p-Werten.
+-   Lineares Modell erstellen: Zunächst wird ein lineares Modell entwickelt, um den Zusammenhang zwischen den Variablen (z. B. Platzierung und Tordifferenz) zu analysieren. Die Regressionsgleichung in der Form $$GD = β₀ + β₁ × Rank + ε$$ beschreibt die Beziehung, wobei β₀ den Achsenabschnitt, β₁ die Steigung und ε den Fehlerterm darstellt. Die Funktion `summary(model)` liefert eine Übersicht der Modellergebnisse, einschliesslich Regressionskoeffizienten, R-Quadrat und p-Werten.
 
 -   Berechnung und Interpretation der Steigung: Der Regressionskoeffizient β₁, der die Veränderung der Tordifferenz bei einer Änderung der Platzierung um eine Einheit beschreibt, wird extrahiert. Ein positiver Wert zeigt eine positive Beziehung (bessere Platzierung korreliert mit einer höheren Tordifferenz), während ein negativer Wert das Gegenteil andeutet.
 
@@ -1224,7 +1224,7 @@ ist, wird der Club der nächsten Saison als
 
 `Next_season_top3 = ifelse(Is_consecutive == 1, lead(Club), NA)`
 
-<p>Schließlich wird überprüft, ob der Club in der nächsten Saison
+<p>Schliesslich wird überprüft, ob der Club in der nächsten Saison
 tatsächlich wieder unter den Top 3 ist, und die Variable
 <strong>Repeated_top3</strong> wird gesetzt, um dies anzuzeigen:</p>
 
@@ -1248,7 +1248,7 @@ ausgegeben:</p>
 
 ## Visualisierung der Wahrscheinlichkeit
 
-<p>Abschließend wird ein Diagramm erstellt, das zeigt, ob ein Club
+<p>Abschliessend wird ein Diagramm erstellt, das zeigt, ob ein Club
 in aufeinanderfolgenden Saisons wieder in den Top 3 war. Die
 <strong>Reihenfolge der Saisons</strong> wird auf der x-Achse
 angezeigt, und die <strong>Wiederholung der Top 3
@@ -1330,7 +1330,7 @@ ggplot(probabilities, aes(x = "", y = Probability, fill = Category)) +
 
 **Datenvorbereitung: Nur relevante Spalten auswählen und sortieren**
 
--   Die Daten werden gefiltert, sodass nur Meisterteams (Rank == 1) berücksichtigt werden. Anschließend wird mit der lead()-Funktion überprüft, ob der Meistertitel im nächsten Jahr verteidigt wurde. Ergebnisse werden in der Spalte Repeated gespeichert.
+-   Die Daten werden gefiltert, sodass nur Meisterteams (Rank == 1) berücksichtigt werden. Anschliessend wird mit der lead()-Funktion überprüft, ob der Meistertitel im nächsten Jahr verteidigt wurde. Ergebnisse werden in der Spalte Repeated gespeichert.
 
 **Summierung der Wiederholungen und Nicht-Wiederholungen**:
 
@@ -1544,7 +1544,7 @@ plot <- ggplot(data, aes(x = Marktwert_in_Mio_Euro, y = Pts, color = Club)) +
   ) +
   theme(
     plot.title = element_text(hjust = 0.5),  # Titel zentrieren
-    plot.margin = unit(c(1, 1, 2, 1), "cm"), # Platz am unteren Rand vergrößern
+    plot.margin = unit(c(1, 1, 2, 1), "cm"), # Platz am unteren Rand vergrössern
     axis.text.x = element_text(angle = 45, hjust = 1)  # Achsentext lesbarer machen
   )
 
@@ -1637,7 +1637,7 @@ cat("Mean Absolute Error (MAE):", MAE)
 
 **Berechnung des Mean Absolute Error (MAE):**
 
--   Der Mean Absolute Error (MAE) ist ein Maß für die durchschnittliche Abweichung der Vorhersagen vom tatsächlichen Wert. Es wird berechnet als der Mittelwert der absoluten Differenzen zwischen den vorhergesagten Punkten (predictions) und den tatsächlichen Punkten im Testdatensatz (test_data$Pts).
+-   Der Mean Absolute Error (MAE) ist ein Mass für die durchschnittliche Abweichung der Vorhersagen vom tatsächlichen Wert. Es wird berechnet als der Mittelwert der absoluten Differenzen zwischen den vorhergesagten Punkten (predictions) und den tatsächlichen Punkten im Testdatensatz (test_data$Pts).
 -   Die Formel lautet: $$\text{MAE} = \frac{1}{n} \sum_{i=1}^{n} \left| \text{Vorhersage}_i - \text{tatsächlicher Wert}_i \right|$$
 -   Dabei ist n die Anzahl der Datenpunkte im Testdatensatz.
 
@@ -1716,7 +1716,7 @@ future_pessimistic
 -   Die Funktion simulate_scenario simuliert das Szenario für eine Saison. Basierend auf dem Szenario (optimistic, conservative oder pessimistic) wird der Marktwert der Teams angepasst.
 -   Optimistisch: Der Marktwert wird um 10% + einem saisonalen Faktor erhöht.
 -   Pessimistisch: Der Marktwert wird um 10% + einem saisonalen Faktor reduziert.
--   Konservativ: Der Marktwert bleibt weitgehend unverändert, außer für den saisonalen Faktor.
+-   Konservativ: Der Marktwert bleibt weitgehend unverändert, ausser für den saisonalen Faktor.
 
 **Vorhersagen generieren:**
 
@@ -1734,12 +1734,12 @@ future_pessimistic
 **Simulation für mehrere Saisons:**
 
 -   Die Funktion simulate_seasons führt die Simulation für mehrere Jahre durch. Für jedes Jahr wird ein kleiner saisonaler Faktor (season_factor) generiert, der zufällig zwischen -0.05 und 0.05 liegt.
--   Die simulierten Ergebnisse für jedes Jahr werden in einer Liste gespeichert und anschließend zu einem einzelnen Datensatz zusammengeführt.
+-   Die simulierten Ergebnisse für jedes Jahr werden in einer Liste gespeichert und anschliessend zu einem einzelnen Datensatz zusammengeführt.
 
 **Simulation ausführen:**
 
 -   Die Simulation wird für die Jahre 2024/25, 2025/26 und 2026/27 durchgeführt, für jedes Szenario (optimistisch, konservativ, pessimistisch).
--   Die Ergebnisse für jedes Szenario werden in den Variablen future_optimistic, future_conservative und future_pessimistic gespeichert und anschließend angezeigt.
+-   Die Ergebnisse für jedes Szenario werden in den Variablen future_optimistic, future_conservative und future_pessimistic gespeichert und anschliessend angezeigt.
 
 ## Visualisierung der Simulationsergebnisse
 
@@ -1785,17 +1785,26 @@ plot_simulation(future_pessimistic, "Pessimistisches Szenario")
 -   Pessimistisches Szenario: Visualisiert die Tabellenpositionen für das pessimistisches Szenario.
 
 
-## Zusammenfassung und Interpretation Basierend auf den Szenarien:
+## Zusammenfassung und Interpretation der Szenarien
 
--   Optimistisches Szenario: Höhere Marktwerte führen zu besseren Ergebnissen für die meisten Teams
--   Konservatives Szenario: Stabile Leistung wird erwartet.
--   Pessimistisches Szenario: Leistungseinbrüche bei sinkenden Marktwerten.
+Die Simulation der zukünftigen Tabellenplatzierungen zeigt deutliche Unterschiede zwischen den drei betrachteten Szenarien (optimistisch, konservativ, pessimistisch). Diese Szenarien basieren auf Veränderungen der Marktwerte und ihrer Auswirkungen auf die Leistung der Teams.
+
+-   Optimistisches Szenario: Ein Anstieg der Marktwerte führt zu einer deutlichen Leistungssteigerung bei den meisten Teams. Die Top-Clubs wie BSC Young Boys und FC Basel 1893 dominieren weiterhin, jedoch profitieren auch kleinere Teams von verbesserten Marktwerten. Insgesamt zeigt dieses Szenario eine stärkere Wettbewerbsfähigkeit und höhere Punktzahlen in der Liga.
+-   Konservatives Szenario: In diesem Szenario bleiben die Marktwerte weitgehend unverändert. Die Tabelle zeigt eine stabile Leistung der Teams, mit nur geringfügigen Verschiebungen in den Platzierungen. Dieses Szenario repräsentiert den Status quo und ist nützlich, um die aktuellen Leistungsdynamiken in der Liga zu bewerten.
+-   Pessimistisches Szenario: Ein Rückgang der Marktwerte führt zu spürbaren Leistungseinbrüchen, insbesondere bei Teams, die auf hohe Investitionen angewiesen sind. Top-Clubs bleiben meist stark, jedoch kämpfen mittelmässige und kleinere Vereine mit deutlich schlechteren Ergebnissen. Das Szenario verdeutlicht, wie empfindlich Teams auf finanzielle Veränderungen reagieren.
+
+## Interpretation
+Die Simulationen unterstreichen die Bedeutung des Marktwerts als Schlüsselfaktor für den sportlichen Erfolg. Während ein Anstieg der Marktwerte zu einer insgesamt höheren Wettbewerbsfähigkeit führt, zeigt ein Rückgang deutliche Schwächen im System auf. Die konservative Prognose dient als realistischer Referenzpunkt, um die möglichen Extremszenarien einzuordnen.
+
+Diese Ergebnisse können Vereinen und Entscheidungsträgern helfen, Strategien zur Optimierung von Marktwerten und sportlicher Leistung zu entwickeln. Sie verdeutlichen zudem, wie wirtschaftliche Faktoren die Dynamiken einer Liga beeinflussen und dass eine gezielte Förderung insbesondere kleinerer Vereine langfristig die Stabilität und Attraktivität der Liga sichern kann.
+
+Unsere Software simuliert mögliche Platzierungen für zukünftige Saisons, stellt jedoch keine Garantie dar. In der aktuellen Simulation wird YB Meister, obwohl das Team derzeit(stand 05.01.2025) auf Platz 9 der Superleague steht. Auffällig ist, dass Mannschaften wie FC Zürich und FC Basel weiterhin in der Spitze mitspielen, während Überraschungen wie FC Lugano und Servette FC, die in der Simulation nie Meister wurden, ebenfalls für Spannung sorgen.
 
 # Quellen
 
--   https://www.transfermarkt.ch  (Zugriff am 11. November 2024)
--   https://studyflix.de
--   https://spaces.technik.fhnw.ch/storage/uploads/mml/2019/09/marcelsteinerskriptwahrscheinlichkeitstheorieundstatistik.pdf
--   https://rstudio.github.io/renv/articles/renv.html
--   https://rcourses.pages.fhnw.ch/programmieren-in-r/
+-   https://www.transfermarkt.ch    (Zugriff am 11. November 2024)
+-   https://studyflix.de    (Zugriff am 17. November 2024)
+-   https://spaces.technik.fhnw.ch/storage/uploads/mml/2019/09/marcelsteinerskriptwahrscheinlichkeitstheorieundstatistik.pdf    (Zugriff am 11. November 2024)
+-   https://rstudio.github.io/renv/articles/renv.html   (Zugriff am 22. November 2024)
+-   https://rcourses.pages.fhnw.ch/programmieren-in-r/    (Zugriff am 16. November 2024)
 
