@@ -1,9 +1,9 @@
 
-# 📊 Die Wahrscheinlichkeit, die Schweizer Super League zu gewinnen
+# Die Wahrscheinlichkeit, die Schweizer Super League zu gewinnen
 
 Dieses Projekt untersucht die Gewinnwahrscheinlichkeit der einzelnen Teams in der Schweizer Super League anhand historischer Daten. Ziel ist es, durch statistische Methoden und Simulationen datenbasierte Aussagen über den Ausgang der Meisterschaft zu treffen.
 
-## 🔍 Projektbeschreibung
+## Projektbeschreibung
 
 Basierend auf Spielresultaten und Tabellenpositionen wurden Wahrscheinlichkeitsmodelle entwickelt, die über Simulationen visualisiert und ausgewertet wurden. Die zentrale Frage lautet:
 
@@ -16,7 +16,7 @@ Die Analyse wurde vollständig in R durchgeführt. Die Ergebnisse umfassen:
 - Durchführung von Monte-Carlo-Simulationen,
 - visuelle Darstellung der Meisterschaftswahrscheinlichkeiten aller Teams.
 
-## 🛠️ Voraussetzungen
+## Voraussetzungen
 
 Für die lokale Ausführung werden folgende Tools benötigt:
 
@@ -24,7 +24,7 @@ Für die lokale Ausführung werden folgende Tools benötigt:
 - RStudio (empfohlen)
 - Das R-Paket `renv` zur Verwaltung der Abhängigkeiten
 
-## 🚀 Ausführen des Projekts
+## Ausführen des Projekts
 
 1. Projekt in RStudio öffnen.
 
@@ -48,19 +48,19 @@ Für die lokale Ausführung werden folgende Tools benötigt:
 
 Dadurch wird die HTML-Datei generiert, die die gesamte Auswertung samt Visualisierungen enthält.
 
-## 📁 Enthaltene Dateien
+## Enthaltene Dateien
 
 - **Die Wahrscheinlichkeit die Schweizer Superleague zu gewinnen.Rmd** – Das zentrale RMarkdown-Dokument mit Code, Text und Visualisierungen.
 - **Die Wahrscheinlichkeit die Schweizer Superleague zu gewinnen.nb.html** – Die fertige HTML-Version des Berichts.
 - **renv.lock** – Lock-Datei mit den verwendeten R-Paketversionen für eine reproduzierbare Analyse.
 
-## 👥 Autoren
+## Autoren
 
 - Alejandro Scheifele  
 - Sébastien Bagdasarianz  
 
 *Projektarbeit im Rahmen des Moduls PRR, Januar 2025*
 
-## 📜 Lizenz
+## Lizenz
 
 Diese Analyse wurde im Rahmen eines Schulprojekts erstellt. Eine Weiterverwendung bedarf der Zustimmung der Autoren.
